@@ -279,16 +279,17 @@ _.filter = function(arr, func){
      * edge cases: function doesn't return boolean
      */ 
     //create new array 
-    let newArray = [];
-    //loop through given array, add items that pass test
-    for (let i = 0; i < arr.length; i++){
-        if (func(arr[i], i, arr)){
-            newArray.push(arr[i]);
-        }
-    }
+    let result = []; 
+    //pass array and ad hock arrow function into each
+    _.each(arr, (element, index, array) => {
+      //push element into array if it passes test
+      if (func(element, index, array)){
+        result.push(element);
+      }
+    });
     //return array
-    return newArray;
- }
+    return result;    
+}
 
 
 /** _.reject
