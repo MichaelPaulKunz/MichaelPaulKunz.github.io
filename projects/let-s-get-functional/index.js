@@ -116,51 +116,32 @@ var friendsCount = function(array, name){
 };
 
 var topThreeTags = function(array){
-  //store objects with string tag and number count
-  let counts = [];
-  //remove the number counts and store only the strings
-  let tags = [];
-  //weed out stray strings
-  let weed = [];
-  /**
-   * These nested for loops are based around the
-   * countBy function in Chapter 5 of Eloquent
-   * JavaScript
-   */ 
-  for (let i = 0; i < array.length; i++){
-    for (let j = 0; j < array[i].tags.length; j++){
-      let tag = array[i].tags[j];
-      let known = _.indexOf(counts, tag);
-      /**
-       * They do something I don't understand that in 
-       * effect conflates the object and its name 
-       * property, so I do some weird stuff to counteract
-       * it...
-       */ 
-      if (known === -1){
-          //... like pushing both the string and the object
-          //... into the array so my condition will work...
-          counts.push(tag);
-          counts.push({tag, count: 1});
-      } else {
-          //... and then incrementing the index after the one holding the string
-          counts[known + 1].count++;
-      }//end conditionals
-    }//end nested loop      
-  }//end parent loop
-  
-  //weed the loose strings out of the counts array
-  _.map(counts, function(e){
-    if (typeof e === "object"){
-      weed.push(e);
-    }
-  });
-  //sort by size of count
-  weed.sort((a,b) => b.count - a.count);
-  //map to tag property
-  tags = _.map(weed, a => a.tag);
-  //return first three elements
-  return tags.slice(0,3);
+    //declare tag array
+    let tagArray = [];
+    //loop through given array
+    for (let i = 0; i < array.length; i++){
+        //concatenate tags array from each object
+        let customerObj = array[i];
+        tagArray = tagArray.concat(customerObj.tags);
+    }//end for loop
+    //use reduce to create object of tag keys and count values
+    let tagCountObj = tagArray.reduce(function(tagObj, currentTag){
+        if (tagObj[currentTag]){
+            tagObj[currentTag]++;
+        } else{
+            tagObj[currentTag] = 1;
+        }
+        return tagObj;
+    }, {}); 
+    let countsArray = [];
+    //not sure what this line does
+    countsArray = Object.entries(tagCountObj);
+    //sort countsArray
+    countsArray.sort((a,b) => b[1] - a[1]);
+    //get top three
+    let topThreeArray = countsArray.slice(0,3);
+    let topThreeWords = topThreeArray.map(obj => obj[0]);
+    return topThreeWords;
 };
 
 var genderCount = function(array){
