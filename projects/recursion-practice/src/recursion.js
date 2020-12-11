@@ -469,7 +469,7 @@ var numToText = function(str) {
   let numWord = [" ", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine"];
   //base case
   if (str.length === 0){
-    return [];
+    return "";
   }
   //recursive case
   let char = str[0];
